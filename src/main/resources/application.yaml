@@ -1,0 +1,11 @@
+spring:
+  cloud:
+    gateway:
+      mvc:
+        routes:
+          - id: post-route
+            uri: ${POST_ROUTE_URI:http://localhost:8080}
+            predicates:
+              - Path=/sites/**
+            filters:
+              - PrefixPath=/api
