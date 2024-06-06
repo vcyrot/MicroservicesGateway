@@ -1,11 +1,27 @@
 spring:
   cloud:
     gateway:
-      mvc:
-        routes:
-          - id: post-route
-            uri: ${POST_ROUTE_URI:http://localhost:8080}
-            predicates:
-              - Path=/sites/**
-            filters:
-              - PrefixPath=/api
+      routes:
+        - id: mongo-route
+          uri: http://localhost:8080
+          predicates:
+            - Path=/api/mongo/sites/**
+            - Path=/api/mongo/sports/**
+        - id: noe4j-route
+          uri: http://localhost:7687
+          predicates:
+            - Path=/api/neo4j/sites/**
+            - Path=/api/neo4j/sports/**
+            - Path=/api/neo4j/events/**
+        - id: post-route
+          uri: http://localhost:5432
+          predicates:
+            - Path=/api/postgres/users/**
+            - Path=/api/postgres/userplans/**
+  management:
+    endpoints:
+      web:
+        exposure:
+          include: "*"
+server:
+  port: 8081
